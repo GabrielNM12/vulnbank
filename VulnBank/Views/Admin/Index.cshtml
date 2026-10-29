@@ -1,0 +1,35 @@
+@model List<VulnBank.Models.User>
+@{
+    ViewData["Title"] = "Administração";
+}
+
+<h1 class="page-title">Clientes</h1>
+
+<div class="card">
+    <h2>Contas cadastradas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Usuário</th>
+                <th>Conta</th>
+                <th class="num">Saldo</th>
+                <th>Perfil</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.Id</td>
+                    <td>@u.FullName</td>
+                    <td>@u.Username</td>
+                    <td>@u.AccountNumber</td>
+                    <td class="num">R$ @u.Balance.ToString("N2")</td>
+                    <td>@(u.IsAdmin ? "Administrador" : "Cliente")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
