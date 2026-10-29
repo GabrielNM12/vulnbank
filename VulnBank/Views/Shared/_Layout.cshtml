@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " · Nimbus Bank" : "Nimbus Bank")</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="@ViewBag.BodyClass">
+    @if (Context.Session.GetInt32("uid") != null)
+    {
+        <header class="topbar">
+            <div style="display:flex;align-items:center;flex:1">
+                <a class="brand" href="/Account"><span class="logo"></span> Nimbus Bank</a>
+                <nav class="nav">
+                    <a href="/Account">Início</a>
+                    <a href="/Account/Transfer">Transferir</a>
+                    <a href="/Account/Statement">Extrato</a>
+                </nav>
+            </div>
+            <div class="usermenu">
+                <span class="uname">Olá, <strong>@Context.Session.GetString("uname")</strong></span>
+                <a href="/Home/Logout">Sair</a>
+            </div>
+        </header>
+    }
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer class="foot">
+        Nimbus Bank · ambiente de demonstração · instituição fictícia
+    </footer>
+</body>
+</html>

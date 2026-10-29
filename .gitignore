@@ -1,0 +1,18 @@
+# Build
+bin/
+obj/
+
+# Banco local gerado em runtime (recriado ao iniciar)
+*.db
+*.db-shm
+*.db-wal
+
+# Gabarito do exercício — NÃO versionar (contém as respostas das falhas)
+GABARITO_VULNERABILIDADES.md
+GABARITO*.md
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+*.user
