@@ -1,0 +1,21 @@
+@model VulnBank.Models.Transaction
+@{
+    ViewData["Title"] = "Comprovante";
+    DateTime.TryParse(Model.CreatedAt, out var d);
+}
+
+<div class="card receipt">
+    <div class="check">✓</div>
+    <h2 style="text-align:center">Comprovante de transferência</h2>
+    <div class="big">R$ @Model.Amount.ToString("N2")</div>
+
+    <div style="margin-top:18px">
+        <div class="row"><span>De</span><span>@Model.FromName · @Model.FromAccount</span></div>
+        <div class="row"><span>Para</span><span>@Model.ToName · @Model.ToAccount</span></div>
+        <div class="row"><span>Descrição</span><span>@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</span></div>
+        <div class="row"><span>Data</span><span>@(d == default ? Model.CreatedAt : d.ToString("dd/MM/yyyy HH:mm")) UTC</span></div>
+        <div class="row"><span>ID da transação</span><span>#@Model.Id</span></div>
+    </div>
+
+    <a class="btn block" href="/Account" style="margin-top:22px">Voltar ao início</a>
+</div>

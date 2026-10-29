@@ -1,0 +1,52 @@
+@model VulnBank.Models.User
+@{
+    ViewData["Title"] = "Início";
+    var txs = ViewBag.Transactions as List<VulnBank.Models.Transaction> ?? new List<VulnBank.Models.Transaction>();
+}
+
+<h1 class="page-title">Visão geral</h1>
+
+<div class="grid two">
+    <div class="card balance-card">
+        <div class="label">Saldo disponível</div>
+        <div class="amount">R$ @Model.Balance.ToString("N2")</div>
+        <div class="acct">@Model.FullName · conta @Model.AccountNumber</div>
+        <div class="actions">
+            <a class="btn accent" href="/Account/Transfer">Transferir</a>
+            <a class="btn ghost" href="/Account/Statement">Ver extrato</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Atalhos</h2>
+        <p class="muted small">Envie dinheiro para qualquer conta Nimbus usando o número da conta de destino.</p>
+        <a class="btn block" href="/Account/Transfer" style="margin-top:12px">Nova transferência</a>
+    </div>
+</div>
+
+<div class="card" style="margin-top:18px">
+    <h2>Transações recentes</h2>
+    @if (txs.Count == 0)
+    {
+        <p class="muted small">Nenhuma transação ainda.</p>
+    }
+    else
+    {
+        foreach (var t in txs)
+        {
+            var incoming = t.ToId == Model.Id;
+            <div class="tx">
+                <div>
+                    <div class="desc">@(string.IsNullOrEmpty(t.Description) ? "Transferência" : t.Description)</div>
+                    <div class="meta">
+                        @(incoming ? ("de " + t.FromName) : ("para " + t.ToName)) ·
+                        @(DateTime.TryParse(t.CreatedAt, out var d) ? d.ToString("dd/MM/yyyy") : t.CreatedAt)
+                    </div>
+                </div>
+                <div class="val @(incoming ? "amount-pos" : "amount-neg")">
+                    @(incoming ? "+" : "−") R$ @Math.Abs(t.Amount).ToString("N2")
+                </div>
+            </div>
+        }
+    }
+</div>

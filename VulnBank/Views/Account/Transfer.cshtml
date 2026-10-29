@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Transferir";
+    var balance = ViewBag.Balance != null ? (double)ViewBag.Balance : 0.0;
+}
+
+<h1 class="page-title">Transferência</h1>
+
+<div class="card" style="max-width:480px">
+    <p class="muted small" style="margin-top:0">
+        Saldo disponível: <strong>R$ @balance.ToString("N2")</strong>
+    </p>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="error">@ViewBag.Error</div>
+    }
+
+    <form method="post" action="/Account/Transfer">
+        <label>Conta de destino</label>
+        <input type="text" name="toAccount" placeholder="ex.: 40010002" autocomplete="off" autofocus />
+
+        <label>Valor</label>
+        <div class="input-money">
+            <span>R$</span>
+            <input type="number" name="amount" min="0.01" step="0.01" placeholder="0,00" />
+        </div>
+
+        <label>Descrição (opcional)</label>
+        <input type="text" name="description" placeholder="ex.: Aluguel" autocomplete="off" />
+
+        <button class="btn block accent" type="submit" style="margin-top:22px">Confirmar transferência</button>
+    </form>
+</div>

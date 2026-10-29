@@ -1,0 +1,45 @@
+@model List<VulnBank.Models.Transaction>
+@{
+    ViewData["Title"] = "Extrato";
+    var acct = ViewBag.Account as string;
+}
+
+<h1 class="page-title">Extrato</h1>
+
+<div class="card">
+    <h2>Conta @acct</h2>
+    @if (Model.Count == 0)
+    {
+        <p class="muted small">Nenhuma transação no período.</p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    <th>Contraparte</th>
+                    <th class="num">Valor</th>
+                    <th class="num">Comprovante</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    var incoming = t.ToAccount == acct;
+                    DateTime.TryParse(t.CreatedAt, out var d);
+                    <tr>
+                        <td>@(d == default ? t.CreatedAt : d.ToString("dd/MM/yyyy"))</td>
+                        <td>@(string.IsNullOrEmpty(t.Description) ? "Transferência" : t.Description)</td>
+                        <td>@(incoming ? t.FromName : t.ToName)</td>
+                        <td class="num @(incoming ? "amount-pos" : "amount-neg")">
+                            @(incoming ? "+" : "−") R$ @Math.Abs(t.Amount).ToString("N2")
+                        </td>
+                        <td class="num"><a href="/Account/Receipt?id=@t.Id">#@t.Id</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
